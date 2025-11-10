@@ -29,7 +29,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@openrewrite/rewrite": "^8.67.0-20251110-160302"
+    "@openrewrite/rewrite": "next"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

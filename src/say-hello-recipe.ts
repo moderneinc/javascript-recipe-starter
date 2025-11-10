@@ -1,6 +1,7 @@
 import { Recipe, ExecutionContext, TreeVisitor } from '@openrewrite/rewrite';
 import { JavaScriptVisitor, template } from '@openrewrite/rewrite/javascript';
 import { J } from '@openrewrite/rewrite/java';
+import { produce } from 'immer';
 
 /**
  * Recipe that adds a hello() method to JavaScript/TypeScript classes.
@@ -51,16 +52,10 @@ return "Hello from " + this.constructor.name + "!";
                 // Extract the hello method from the temporary class
                 const helloMethod = (tempClass as J.ClassDeclaration).body.statements[0];
 
-                // Add the hello method to the existing class body
-                const newStatements = [...updatedClass.body.statements, helloMethod];
-
-                return {
-                    ...updatedClass,
-                    body: {
-                        ...updatedClass.body,
-                        statements: newStatements as J.RightPadded<any>[]
-                    }
-                } as J.ClassDeclaration;
+                // Add the hello method to the existing class body using produce
+                return produce(updatedClass, draft => {
+                    draft.body.statements = [...draft.body.statements, helloMethod];
+                });
             }
         }
 
@@ -76,7 +71,8 @@ return "Hello from " + this.constructor.name + "!";
         }
 
         return classDecl.body.statements.some((stmt) => {
-            const element = (stmt as any).element || stmt;
+            // Properly unwrap RightPadded wrapper
+            const element = stmt.element;
             if (element.kind === J.Kind.MethodDeclaration) {
                 const method = element as J.MethodDeclaration;
                 return method.name.simpleName === 'hello';

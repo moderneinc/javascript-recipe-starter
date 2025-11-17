@@ -28,15 +28,15 @@ This repository includes example recipes that demonstrate different authoring ap
 
 ### Transformation recipes
 
-- **MigrateUtilFunctions** - Replaces deprecated Node.js `util` type checking methods (like `util.isArray()`) with native JavaScript equivalents (like `Array.isArray()`). Demonstrates pattern-based, declarative recipe authoring using `pattern` and `rewrite()` rules with type context.
+- **[MigrateUtilFunctions](./src/migrate-util-functions.ts)** - Replaces deprecated Node.js `util` type checking methods (like `util.isArray()`) with native JavaScript equivalents (like `Array.isArray()`). Demonstrates pattern-based, declarative recipe authoring using `pattern` and `rewrite()` rules with type context.
 
-- **SayHelloRecipe** - Adds a `hello()` method to JavaScript/TypeScript classes that don't already have one. Demonstrates visitor-based recipe authoring with manual LST manipulation and the template API.
+- **[SayHelloRecipe](./src/say-hello-recipe.ts)** - Adds a `hello()` method to JavaScript/TypeScript classes that don't already have one. Demonstrates visitor-based recipe authoring with manual LST manipulation and the template API.
 
-- **SemanticForwardRefMigration** - Wraps React `forwardRef()` calls with `memo()` for better performance. Demonstrates **semantic type matching** that works across different import styles (named, namespace, default, and aliased imports). Shows how one pattern with type context can match syntactically different but semantically equivalent code.
+- **[SemanticForwardRefMigration](./src/semantic-matching.ts)** - Wraps React `forwardRef()` calls with `memo()` for better performance. Demonstrates **semantic type matching** that works across different import styles (named, namespace, default, and aliased imports). Shows how one pattern with type context can match syntactically different but semantically equivalent code.
 
 ### Search recipes
 
-- **FindMethodCalls** - Finds and records all calls to a specified method name in a data table. Demonstrates **search recipes** that collect findings without modifying code, useful for impact analysis before migrations. Shows the `@Option` decorator for configurable recipes and `@Column` for data table structure. Results can be exported to CSV.
+- **[FindMethodCalls](./src/find-method-calls.ts)** - Finds and records all calls to a specified method name in a data table. Demonstrates **search recipes** that collect findings without modifying code, useful for impact analysis before migrations. Shows the `@Option` decorator for configurable recipes and `@Column` for data table structure. Results can be exported to CSV.
 
 ## Running your recipes
 

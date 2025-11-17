@@ -29,14 +29,16 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@openrewrite/rewrite": "next",
+    "@openrewrite/rewrite": "^8.67.0-20251117-170519",
     "immer": "^10.1.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "^22.9.0",
+    "@types/react": "^18.3.0",
     "jest": "^29.7.0",
     "rimraf": "^6.1.0",
+    "tmp-promise": "^3.0.3",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.2"
   },

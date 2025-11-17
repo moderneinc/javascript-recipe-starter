@@ -5,6 +5,8 @@ module.exports = {
   collectCoverage: false,
   moduleFileExtensions: ['ts', 'js'],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.ts$': ['ts-jest', {
+      tsconfig: 'tsconfig.json'
+    }],
   },
 };

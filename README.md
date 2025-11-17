@@ -38,14 +38,6 @@ This repository includes example recipes that demonstrate different authoring ap
 
 - **[FindMethodCalls](./src/find-method-calls.ts)** - Finds and records all calls to a specified method name in a data table. Demonstrates **search recipes** that collect findings without modifying code, useful for impact analysis before migrations. Shows the `@Option` decorator for configurable recipes and `@Column` for data table structure. Results can be exported to CSV.
 
-## Running your recipes
-
-To run these recipes against your own JavaScript/TypeScript codebase, you'll need to use the [Moderne CLI](https://docs.moderne.io/user-documentation/moderne-cli/getting-started/cli-intro) and [configure it to use JavaScript LSTs](https://docs.moderne.io/user-documentation/moderne-cli/how-to-guides/javascript):
-
-```bash
-mod run . --recipe=MigrateUtilFunctions
-```
-
 ## Project structure
 
 ```
@@ -64,6 +56,14 @@ javascript-recipe-starter/
 ├── package.json
 ├── tsconfig.json
 └── jest.config.js
+```
+
+## Running your recipes
+
+To run these recipes against your own JavaScript/TypeScript codebase, you'll need to use the [Moderne CLI](https://docs.moderne.io/user-documentation/moderne-cli/getting-started/cli-intro) and [configure it to use JavaScript LSTs](https://docs.moderne.io/user-documentation/moderne-cli/how-to-guides/javascript):
+
+```bash
+mod run . --recipe=MigrateUtilFunctions
 ```
 
 ## License

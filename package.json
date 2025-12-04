@@ -24,7 +24,7 @@
   },
   "homepage": "https://docs.openrewrite.org/",
   "scripts": {
-    "build": "rimraf ./dist && tsc",
+    "build": "rimraf ./dist && tsc --build tsconfig.build.json",
     "test": "npm run build && jest",
     "test:watch": "jest --watch"
   },

@@ -4,6 +4,9 @@
   "description": "Example OpenRewrite JavaScript recipes and tests to help you get started",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

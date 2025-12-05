@@ -4,8 +4,8 @@ node_modules/
 # Build output
 dist/
 
-# Test output
-tsconfig.build.tsbuildinfo
+# Typescript build cache
+*.tsbuildinfo
 
 # Coverage
 coverage/

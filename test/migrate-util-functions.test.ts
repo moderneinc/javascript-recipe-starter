@@ -149,4 +149,50 @@ describe('MigrateUtilFunctions', () => {
             )
         );
     });
+
+    test('handles named imports', async () => {
+        await spec.rewriteRun(
+            typescript(
+                `
+                import { isArray } from 'util';
+
+                const arr = [1, 2, 3];
+                if (isArray(arr)) {
+                    console.log('is array');
+                }
+                `,
+                `
+                import { isArray } from 'util';
+
+                const arr = [1, 2, 3];
+                if (Array.isArray(arr)) {
+                    console.log('is array');
+                }
+                `
+            )
+        );
+    });
+
+    test('handles different namespace name', async () => {
+        await spec.rewriteRun(
+            typescript(
+                `
+                import * as nodeUtil from 'util';
+
+                const arr = [1, 2, 3];
+                if (nodeUtil.isArray(arr)) {
+                    console.log('is array');
+                }
+                `,
+                `
+                import * as nodeUtil from 'util';
+
+                const arr = [1, 2, 3];
+                if (Array.isArray(arr)) {
+                    console.log('is array');
+                }
+                `
+            )
+        );
+    });
 });

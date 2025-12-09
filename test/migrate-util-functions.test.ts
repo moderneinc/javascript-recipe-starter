@@ -195,4 +195,27 @@ describe('MigrateUtilFunctions', () => {
             )
         );
     });
+
+    test('handles CommonJS require', async () => {
+        await spec.rewriteRun(
+            typescript(
+                `
+                const util = require('util');
+
+                const arr = [1, 2, 3];
+                if (util.isArray(arr)) {
+                    console.log('is array');
+                }
+                `,
+                `
+                const util = require('util');
+
+                const arr = [1, 2, 3];
+                if (Array.isArray(arr)) {
+                    console.log('is array');
+                }
+                `
+            )
+        );
+    });
 });

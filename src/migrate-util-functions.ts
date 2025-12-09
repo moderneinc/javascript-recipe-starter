@@ -33,7 +33,8 @@ export class MigrateUtilFunctions extends Recipe {
  * Visitor that replaces util method calls using pattern-based rewrite rules.
  */
 class MigrateUtilFunctionsVisitor extends JavaScriptVisitor<ExecutionContext> {
-    // Configure patterns with util dependency for type attribution
+    // This pattern describes what we want to limit our search to: code that
+    // uses the NodeJS `util` package (rather than any object named util).
     private patternConfig = {
         context: ["import * as util from 'util';"],
         // Not necessary for this recipe as OpenRewrite can detect that this util is the NodeJS util.
@@ -41,10 +42,12 @@ class MigrateUtilFunctionsVisitor extends JavaScriptVisitor<ExecutionContext> {
         dependencies: { '@types/node': '^22.0.0' }
     };
 
-    // Capture variable to hold the argument
+    // Capture variable acts like a placeholder that matches any expression
     private arg = capture();
 
-    // Define rewrite rules using pattern matching
+    // We pass the above pattern into the `.configure()` method. After doing so,
+    // we will only change `util.isArray(..)` to `Array.isArray(..)` if `util`
+    // is from the NodeJS `util` package.
     private isArrayRule = rewrite(() => ({
         before: pattern`util.isArray(${this.arg})`.configure(this.patternConfig),
         after: template`Array.isArray(${this.arg})`

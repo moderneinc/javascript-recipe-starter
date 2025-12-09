@@ -34,7 +34,12 @@ export class MigrateUtilFunctions extends Recipe {
  */
 class MigrateUtilFunctionsVisitor extends JavaScriptVisitor<ExecutionContext> {
     // Configure patterns with util dependency for type attribution
-    private patternConfig = { context: ["import * as util from 'util';"] };
+    private patternConfig = {
+        context: ["import * as util from 'util';"],
+        // Not necessary for this recipe as OpenRewrite can detect that this util is the NodeJS util.
+        // However, it's included here to demonstrate that you can provide a dependency to the pattern.
+        dependencies: { '@types/node': '^22.0.0' }
+    };
 
     // Capture variable to hold the argument
     private arg = capture();

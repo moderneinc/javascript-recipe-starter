@@ -46,7 +46,7 @@ class SayHelloVisitor extends JavaScriptVisitor<ExecutionContext> {
 hello() {
 return "Hello from " + this.constructor.name + "!";
 }
-}`.apply(this.cursor, updatedClass);
+}`.apply(updatedClass, this.cursor);
 
             if (tempClass && (tempClass as J.ClassDeclaration).body) {
                 // Extract the hello method from the temporary class

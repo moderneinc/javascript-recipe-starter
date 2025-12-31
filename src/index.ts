@@ -1,4 +1,4 @@
-import {RecipeRegistry} from '@openrewrite/rewrite';
+import {JavaScript, RecipeMarketplace} from '@openrewrite/rewrite';
 import {FindMethodCalls} from './find-method-calls';
 import {MigrateUtilFunctions} from './migrate-util-functions';
 import {SayHelloRecipe} from './say-hello-recipe';
@@ -13,11 +13,11 @@ export { SemanticForwardRefMigration } from './semantic-matching';
  * Activates and registers all recipes in this module.
  * This function is called by OpenRewrite to discover available recipes.
  *
- * @param registry The recipe registry to register recipes with
+ * @param marketplace The recipe marketplace to install recipes into
  */
-export function activate(registry: RecipeRegistry) {
-    registry.register(FindMethodCalls);
-    registry.register(MigrateUtilFunctions);
-    registry.register(SayHelloRecipe);
-    registry.register(SemanticForwardRefMigration);
+export async function activate(marketplace: RecipeMarketplace) {
+    await marketplace.install(FindMethodCalls, JavaScript);
+    await marketplace.install(MigrateUtilFunctions, JavaScript);
+    await marketplace.install(SayHelloRecipe, JavaScript);
+    await marketplace.install(SemanticForwardRefMigration, JavaScript);
 }

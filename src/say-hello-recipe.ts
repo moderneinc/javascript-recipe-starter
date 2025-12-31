@@ -1,7 +1,7 @@
 import { Recipe, ExecutionContext, TreeVisitor } from '@openrewrite/rewrite';
 import { JavaScriptVisitor, template } from '@openrewrite/rewrite/javascript';
 import { J } from '@openrewrite/rewrite/java';
-import { produce } from 'immer';
+import { create, Draft } from 'mutative';
 
 /**
  * Recipe that adds a hello() method to JavaScript/TypeScript classes.
@@ -52,8 +52,8 @@ return "Hello from " + this.constructor.name + "!";
                 // Extract the hello method from the temporary class
                 const helloMethod = (tempClass as J.ClassDeclaration).body.statements[0];
 
-                // Add the hello method to the existing class body using produce
-                return produce(updatedClass, draft => {
+                // Add the hello method to the existing class body using create
+                return create(updatedClass, (draft: Draft<J.ClassDeclaration>) => {
                     draft.body.statements = [...draft.body.statements, helloMethod];
                 });
             }

@@ -28,3 +28,7 @@ npm-debug.log*
 # Environment
 .env
 .env.local
+
+# Moderne CLI
+.moderne/*
+!.moderne/context/

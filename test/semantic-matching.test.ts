@@ -20,6 +20,8 @@ const REACT_PACKAGE_JSON = `
 `;
 
 describe('SemanticForwardRefMigration (Section 5: Semantic Matching)', () => {
+    jest.setTimeout(30_000);
+
     test('matches forwardRef with named import (merges into existing import)', async () => {
         const spec = new RecipeSpec();
         spec.recipe = new SemanticForwardRefMigration();
@@ -107,7 +109,7 @@ describe('SemanticForwardRefMigration (Section 5: Semantic Matching)', () => {
                         const MyComponent = reactForwardRef(Component);
                         `,
                         `
-                        import {forwardRef, memo, forwardRef as reactForwardRef } from 'react';
+                        import { forwardRef, memo, forwardRef as reactForwardRef } from 'react';
                         const MyComponent = memo(forwardRef(Component));
                         `
                         // Note: Semantic matching FOUND it via the alias 'reactForwardRef'

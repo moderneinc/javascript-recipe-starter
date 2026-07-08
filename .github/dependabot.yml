@@ -1,0 +1,40 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      openrewrite:
+        patterns:
+          - "@openrewrite/*"
+      types:
+        patterns:
+          - "@types/*"
+      testing:
+        patterns:
+          - "jest"
+          - "ts-jest"
+      typescript:
+        patterns:
+          - "typescript"
+      dev-tooling:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@openrewrite/*"
+          - "@types/*"
+          - "jest"
+          - "ts-jest"
+          - "typescript"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      github-actions:
+        patterns:
+          - "*"

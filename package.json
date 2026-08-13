@@ -32,7 +32,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@openrewrite/rewrite": "^8.88.0"
+    "@openrewrite/rewrite": "^8.88.4"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

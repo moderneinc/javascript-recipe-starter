@@ -22,6 +22,17 @@ Run the tests:
 npm test
 ```
 
+### TypeScript 7
+
+Builds run on TypeScript 7, installed [side by side](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0) with 6.x:
+
+```json
+"@typescript/native": "npm:typescript@^7.0.2",
+"typescript": "npm:@typescript/typescript6@^6.0.2"
+```
+
+`tsc` is the TypeScript 7 native compiler and builds `src`, while `require('typescript')` resolves to 6.x, which still ships the JavaScript compiler API that ts-jest needs to transpile tests (`tsc6` runs the 6.x compiler directly). The 6.x API bundle lives under `node_modules/@typescript/old/`, so path-based tooling config aimed at `node_modules/typescript/` may need to cover `node_modules/@typescript/` too.
+
 ## Example recipes
 
 This repository includes example recipes that demonstrate different authoring approaches and OpenRewrite capabilities:

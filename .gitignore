@@ -32,3 +32,5 @@ npm-debug.log*
 # Moderne CLI
 .moderne/*
 !.moderne/context/
+
+.cursor/rules/*.local.mdc

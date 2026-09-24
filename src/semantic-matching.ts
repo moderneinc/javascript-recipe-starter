@@ -1,5 +1,5 @@
 import {ExecutionContext, Recipe, TreeVisitor} from "@openrewrite/rewrite";
-import {JavaScriptVisitor, capture, pattern, template, maybeAddImport} from "@openrewrite/rewrite/javascript";
+import {JavaScriptVisitor, capture, pattern, raw, template, maybeAddImport} from "@openrewrite/rewrite/javascript";
 import {J, isMethodInvocation} from "@openrewrite/rewrite/java";
 import {JS} from "@openrewrite/rewrite/javascript";
 
@@ -36,17 +36,15 @@ export class SemanticForwardRefMigration extends Recipe {
 
                 const match = await pat.match(method, this.cursor);
                 if (match) {
-                    // Transform: wrap in memo for better performance
-                    const tmpl = template`memo(forwardRef(${comp}))`
+                    const forwardRef = maybeAddImport(this, { module: 'react', member: 'forwardRef', onlyIfReferenced: false })!;
+                    const memo = maybeAddImport(this, { module: 'react', member: 'memo', onlyIfReferenced: false })!;
+                    const tmpl = template`${raw(memo)}(${raw(forwardRef)}(${comp}))`
                         .configure({
                             context: [
-                                `import { forwardRef, memo } from 'react'`
+                                `import { forwardRef as ${forwardRef}, memo as ${memo} } from 'react'`
                             ],
                             dependencies: { '@types/react': '^18.0.0' }
                         });
-                    // We're making a transformation, ensure memo is imported
-                    maybeAddImport(this, { module: 'react', member: 'forwardRef', onlyIfReferenced: false });
-                    maybeAddImport(this, { module: 'react', member: 'memo', onlyIfReferenced: false });
                     return await tmpl.apply(method, this.cursor, {values: match});
                 }
 

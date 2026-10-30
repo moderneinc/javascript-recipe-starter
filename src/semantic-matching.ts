@@ -26,7 +26,7 @@ export class SemanticForwardRefMigration extends Recipe {
                 context: [`import { forwardRef } from 'react'`],
                 dependencies: { '@types/react': '^18.0.0' }
             });
-        const memoized = pattern`memo(${capture()})`
+        const memoized = pattern`memo(${capture({variadic: true})})`
             .configure({
                 context: [`import { memo } from 'react'`],
                 dependencies: { '@types/react': '^18.0.0' }
@@ -57,7 +57,10 @@ export class SemanticForwardRefMigration extends Recipe {
             }
 
             private async isMemoized(): Promise<boolean> {
-                const parent = this.cursor.parentTree();
+                let parent = this.cursor.parentTree();
+                while (parent?.value.kind === J.Kind.Parentheses) {
+                    parent = parent.parentTree();
+                }
                 return !!parent && isMethodInvocation(parent.value) && !!await memoized.match(parent.value, parent);
             }
         }

@@ -139,6 +139,46 @@ describe('SemanticForwardRefMigration (Section 5: Semantic Matching)', () => {
         }, {unsafeCleanup: true});
     });
 
+    test('leaves forwardRef wrapped in memo with a comparator alone', async () => {
+        const spec = new RecipeSpec();
+        spec.recipe = new SemanticForwardRefMigration();
+
+        await withDir(async (repo) => {
+            await spec.rewriteRun(
+                npm(
+                    repo.path,
+                    typescript(
+                        `
+                        import { forwardRef, memo } from 'react';
+                        const MyComponent = memo(forwardRef(Component), (a, b) => a === b);
+                        `
+                    ),
+                    packageJson(REACT_PACKAGE_JSON)
+                )
+            );
+        }, {unsafeCleanup: true});
+    });
+
+    test('leaves parenthesized forwardRef wrapped in memo alone', async () => {
+        const spec = new RecipeSpec();
+        spec.recipe = new SemanticForwardRefMigration();
+
+        await withDir(async (repo) => {
+            await spec.rewriteRun(
+                npm(
+                    repo.path,
+                    typescript(
+                        `
+                        import { forwardRef, memo } from 'react';
+                        const MyComponent = memo((forwardRef(Component)));
+                        `
+                    ),
+                    packageJson(REACT_PACKAGE_JSON)
+                )
+            );
+        }, {unsafeCleanup: true});
+    });
+
     test('does not match non-React forwardRef', async () => {
         const spec = new RecipeSpec();
         spec.recipe = new SemanticForwardRefMigration();

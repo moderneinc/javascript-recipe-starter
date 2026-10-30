@@ -22,6 +22,8 @@ Run the tests:
 npm test
 ```
 
+`RecipeSpec.rewriteRun` runs each recipe a second time, and once more on a fresh parse of its output, and fails the test if either run changes anything. A recipe has to recognize code it has already changed and leave it alone, as `SemanticForwardRefMigration` does with `forwardRef()` calls already wrapped in `memo()`.
+
 ### TypeScript 7
 
 Builds run on TypeScript 7, installed [side by side](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0) with 6.x:

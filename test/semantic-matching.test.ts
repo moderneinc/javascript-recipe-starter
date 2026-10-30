@@ -119,6 +119,26 @@ describe('SemanticForwardRefMigration (Section 5: Semantic Matching)', () => {
         }, {unsafeCleanup: true});
     });
 
+    test('leaves forwardRef already wrapped in memo alone', async () => {
+        const spec = new RecipeSpec();
+        spec.recipe = new SemanticForwardRefMigration();
+
+        await withDir(async (repo) => {
+            await spec.rewriteRun(
+                npm(
+                    repo.path,
+                    typescript(
+                        `
+                        import React from 'react';
+                        const MyComponent = React.memo(React.forwardRef(Component));
+                        `
+                    ),
+                    packageJson(REACT_PACKAGE_JSON)
+                )
+            );
+        }, {unsafeCleanup: true});
+    });
+
     test('does not match non-React forwardRef', async () => {
         const spec = new RecipeSpec();
         spec.recipe = new SemanticForwardRefMigration();

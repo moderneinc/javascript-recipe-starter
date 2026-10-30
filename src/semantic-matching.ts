@@ -26,6 +26,11 @@ export class SemanticForwardRefMigration extends Recipe {
                 context: [`import { forwardRef } from 'react'`],
                 dependencies: { '@types/react': '^18.0.0' }
             });
+        const memoized = pattern`memo(${capture({variadic: true})})`
+            .configure({
+                context: [`import { memo } from 'react'`],
+                dependencies: { '@types/react': '^18.0.0' }
+            });
 
         return new class extends JavaScriptVisitor<ExecutionContext> {
             protected async visitMethodInvocation(
@@ -35,7 +40,7 @@ export class SemanticForwardRefMigration extends Recipe {
                 method = (await super.visitMethodInvocation(method, ctx)) as J.MethodInvocation;
 
                 const match = await pat.match(method, this.cursor);
-                if (match) {
+                if (match && !await this.isMemoized()) {
                     const forwardRef = maybeAddImport(this, { module: 'react', member: 'forwardRef', onlyIfReferenced: false })!;
                     const memo = maybeAddImport(this, { module: 'react', member: 'memo', onlyIfReferenced: false })!;
                     const tmpl = template`${raw(memo)}(${raw(forwardRef)}(${comp}))`
@@ -49,6 +54,14 @@ export class SemanticForwardRefMigration extends Recipe {
                 }
 
                 return method;
+            }
+
+            private async isMemoized(): Promise<boolean> {
+                let parent = this.cursor.parentTree();
+                while (parent?.value.kind === J.Kind.Parentheses) {
+                    parent = parent.parentTree();
+                }
+                return !!parent && isMethodInvocation(parent.value) && !!await memoized.match(parent.value, parent);
             }
         }
     }
